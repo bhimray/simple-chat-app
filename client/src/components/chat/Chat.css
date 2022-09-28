@@ -1,0 +1,55 @@
+.chathead-section{
+    display:flex;
+    justify-content: space-between;
+    background-color: blue;
+    color:white;
+    width:40rem;
+    font-size:3rem;
+    font-weight: 600;
+}
+.status{
+    width:2rem;
+    height: 2rem;
+    border-radius: 50%;
+    color:red;
+}
+.status-active{
+    color:white;
+}
+
+.chatbox-section{
+    position: relative;
+    width: 40rem;
+    height:20rem;
+    overflow-y: scroll;
+    background-color: white;
+    gap:1rem;
+}
+.user{
+    display:flex;
+    flex-direction: row-reverse;
+    gap:1rem;
+
+}
+.left{
+    display: flex;
+    flex-direction: row-reverse;
+}
+.right>message{
+    background-color: plum;
+
+}
+.left>message{
+    background-color:lightblue ;
+
+}
+
+.send-section{
+    width:40rem;
+    font-size: 3rem;
+    font-weight: 600;
+    display:flex;
+    justify-content: space-between;
+    padding:0rem 1rem;
+    background-color: blueviolet;
+}

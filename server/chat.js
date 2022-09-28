@@ -27,14 +27,14 @@ const io = new Server(server, {
 io.on('connection', (socket)=>{
     console.log(socket.id, "user is connected");
 
-    socket.on('create-room', (data)=>{
-        console.log(data,socket.id, 'this is room name')
-        socket.join(data)
-    })
+    // socket.on('create-room', (data)=>{
+    //     console.log(data,socket.id, 'this is room name')
+    //     socket.join(data)
+    // })
 
     socket.on('sendmessage', (data)=>{
-        console.log(data, data.roomName, socket.id)
-        socket.to(data['roomName']).emit('receivedMessage',`${data['message']} is the received message`)
+        console.log(data, socket.id)
+        socket.emit('receivedMessage',`${data['message']}`)
     })
 
     socket.on('disconnect', ()=>{
@@ -49,5 +49,5 @@ io.on('connection', (socket)=>{
 
 //OPENING server at port 5000
 server.listen(5000, ()=>{
-    console.log("server is listening from index.js")
+    console.log("server is listening from chat.js")
 })
