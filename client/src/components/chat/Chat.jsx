@@ -2,10 +2,7 @@ import React from 'react'
 import './Chat.css'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import io from 'socket.io-client'
-
-const socket = io.connect('http://localhost:5000') // always keep this one out of function component
-   
+import io from 'socket.io-client'   
 
 const Chat = () => {
     const [message, fillMessage]= useState('')

@@ -1,0 +1,13 @@
+.room-wrapper{
+    display:grid;
+    gap:1rem;
+}
+.r-room, .r-name{
+
+}
+.r-room>input, .r-name>input{
+    outline:none;
+    border:none;
+    border-bottom:1px solid blue !important;
+    
+}
