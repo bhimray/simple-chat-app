@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import io from 'socket.io-client'   
 
-const Chat = () => {
+const Chat = ({socket, userName, roomName}) => {
     const [message, fillMessage]= useState('')
     // const [roomName, setRoomName] = useState('')
     const [receivedMessage, setReceivedMessage] = useState('')
@@ -46,7 +46,7 @@ const Chat = () => {
        </div>
        <div className='send-section'>
         <input placeholder='type a message here...' onChange={(event)=>fillMessage(event.target.value)}></input>
-        <btn className='send-btn' onClick={sendMessage}>Send</btn>
+        <button className='send-btn' onClick={sendMessage}>Send</button>
        </div>
     </div>
   )
