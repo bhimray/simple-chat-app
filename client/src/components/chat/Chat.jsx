@@ -6,6 +6,7 @@ import io from 'socket.io-client'
 
 const Chat = ({socket, userName, roomName}) => {
     const [message, fillMessage]= useState('')
+    console.log(`typed message by ${socket.id} is ${message}`)
     // const [roomName, setRoomName] = useState('')
     const [receivedMessage, setReceivedMessage] = useState('')
     // console.log(message)
@@ -18,13 +19,15 @@ const Chat = ({socket, userName, roomName}) => {
     //     }
     // }
     const sendMessage=()=>{
-        console.log(message, socket.id)
-        socket.emit('sendmessage',{message})
+        console.log("we received the message")
+        console.log(message, socket.id, 'while sending the input  message')
+        socket.emit('sendmessage',{message, roomName})
     }
     useEffect(()=>{
         socket.on('receivedMessage', (data)=>{
-            console.log(data, `${socket.id} is the socket id`)
-            setReceivedMessage(data)
+            console.log(data['message'], `${socket.id} is the socket id`)
+            setReceivedMessage(data['message'])
+            console.log(`received message by ${socket.id} is ${data['message']}`)
         })
     }, [socket])
   return (

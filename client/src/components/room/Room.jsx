@@ -19,8 +19,8 @@ const Room = () => {
     <>
     {showRegister?
     <div className='room-wrapper'>
-        <div className="r-room"><input className="r-roomName" onChange={(event)=>setUserName(event.target.value)} /></div>
-        <div className="r-name"><input type="text" className="r-userName" onChange={(event)=>setRoomName(event.target.value)}/></div>
+        <div className="r-room"><input placeholder="username" className="r-roomName" onChange={(event)=>setUserName(event.target.value)} /></div>
+        <div className="r-name"><input placeholder='room name' type="text" className="r-userName" onChange={(event)=>setRoomName(event.target.value)}/></div>
         <div className="r-button"><button className="btn" onClick={Createroom}>Join Room</button></div>
     </div>:
     <Chat socket={socket} userName={userName} roomName={roomName}/>

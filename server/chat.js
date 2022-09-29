@@ -25,7 +25,7 @@ const io = new Server(server, {
 
 // setting a connection with the front-end webpage
 io.on('connection', (socket)=>{
-    console.log(socket.id, "user is connected");
+    console.log(socket.id, "user is connected now");
 
     // socket.on('create-room', (data)=>{
     //     console.log(data,socket.id, 'this is room name')
@@ -33,8 +33,9 @@ io.on('connection', (socket)=>{
     // })
 
     socket.on('sendmessage', (data)=>{
-        console.log(data, socket.id)
-        socket.emit('receivedMessage',`${data['message']}`)
+        console.log("we received the message on sever side")
+        console.log(data['message'],data['roomName'], socket.id,"is the message received from the client")
+        socket.to(data['roomName']).emit('receivedMessage',`${data.message} is the message sent by the ${socket.id}`)
     })
 
     socket.on('disconnect', ()=>{
