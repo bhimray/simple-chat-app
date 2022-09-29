@@ -35,7 +35,7 @@ io.on('connection', (socket)=>{
     socket.on('sendmessage', (data)=>{
         console.log("we received the message on sever side")
         console.log(data['message'],data['roomName'], socket.id,"is the message received from the client")
-        socket.to(data['roomName']).emit('receivedMessage',`${data.message} is the message sent by the ${socket.id}`)
+        socket.to(data['roomName']).emit('receivedMessage',data.message)
     })
 
     socket.on('disconnect', ()=>{

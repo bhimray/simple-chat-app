@@ -3,13 +3,20 @@ import './Chat.css'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import io from 'socket.io-client'   
-
+let j=0;
+let msgContainer= []
 const Chat = ({socket, userName, roomName}) => {
     const [message, fillMessage]= useState('')
-    console.log(`typed message by ${socket.id} is ${message}`)
+    const [receivedMessage, setReceivedMessage] = useState([])
+    // const [testArray, setTestArray] = useState([])
+    // msgContainer= [...receivedMessage]
+    // console.log(testArray,"this is test array")
+    console.log(receivedMessage, "received-message")
+    console.log(j++, "j")
+    // console.log(`typed message by ${socket.id} is ${message}`)
     // const [roomName, setRoomName] = useState('')
-    const [receivedMessage, setReceivedMessage] = useState('')
-    // console.log(message)
+    // const [receivedMessage, setReceivedMessage] = useState([])
+    // console.log(receivedMessage, message)
 
     //conneting to the server
     // const Createroom =()=>{
@@ -18,16 +25,23 @@ const Chat = ({socket, userName, roomName}) => {
     //         socket.emit('create-room',roomName)
     //     }
     // }
-    const sendMessage=()=>{
-        console.log("we received the message to send to server")
-        console.log(message, socket.id,roomName, 'while sending the input  message')
-        socket.emit('sendmessage',{message, roomName})
+    const sendMessage=async(e)=>{
+        e.preventDefault()
+        // console.log("we received the message to send to server")
+        // console.log(message, socket.id,roomName, 'while sending the input  message')
+        fillMessage("")
+        await socket.emit('sendmessage',{message, roomName})
+        setReceivedMessage([...receivedMessage, message])
+        
+        // setTestArray((value)=>[...value, "A"])
     }
     useEffect(()=>{
         socket.on('receivedMessage', (data)=>{
-            console.log(data, `${socket.id} is the socket id`)
-            setReceivedMessage(data)
-            console.log(`received message by ${socket.id} is ${data['message']}`)
+            // console.log(receivedMessage, data, `${socket.id} is the socket id`)
+            setReceivedMessage((prev)=>[...prev, data])
+            // console.log(data, "message returned in useeffect")
+            // setTestArray((value)=>[...value, "A"])
+            // console.log(`received message by ${socket.id} is ${data['message']}`)
         })
     }, [socket])
   return (
@@ -39,7 +53,7 @@ const Chat = ({socket, userName, roomName}) => {
        </div>
        <div className='chatbox-section'>
         <div className="user right">
-            <div className='message'>{receivedMessage}</div>
+            <div className='message'>{receivedMessage.map((bit, i)=><div key={i}>{bit}</div>)}</div>
             {/* <div className='time'>{time}</div> */}
         </div>
         {/* <div className="user left">
