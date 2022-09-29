@@ -19,14 +19,14 @@ const Chat = ({socket, userName, roomName}) => {
     //     }
     // }
     const sendMessage=()=>{
-        console.log("we received the message")
-        console.log(message, socket.id, 'while sending the input  message')
+        console.log("we received the message to send to server")
+        console.log(message, socket.id,roomName, 'while sending the input  message')
         socket.emit('sendmessage',{message, roomName})
     }
     useEffect(()=>{
         socket.on('receivedMessage', (data)=>{
-            console.log(data['message'], `${socket.id} is the socket id`)
-            setReceivedMessage(data['message'])
+            console.log(data, `${socket.id} is the socket id`)
+            setReceivedMessage(data)
             console.log(`received message by ${socket.id} is ${data['message']}`)
         })
     }, [socket])

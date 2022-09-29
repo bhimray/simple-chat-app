@@ -9,7 +9,7 @@ import UserRoom from './components/UserRoom';
 function App() {
   return (
     <div className="App">
-      <UserRoom/>
+      <Room/>
     </div>
   );
 }

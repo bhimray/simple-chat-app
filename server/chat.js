@@ -27,10 +27,10 @@ const io = new Server(server, {
 io.on('connection', (socket)=>{
     console.log(socket.id, "user is connected now");
 
-    // socket.on('create-room', (data)=>{
-    //     console.log(data,socket.id, 'this is room name')
-    //     socket.join(data)
-    // })
+    socket.on('create-room', (data)=>{
+        console.log(data,socket.id, 'this is room name')
+        socket.join(data)
+    })
 
     socket.on('sendmessage', (data)=>{
         console.log("we received the message on sever side")

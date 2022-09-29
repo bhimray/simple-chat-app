@@ -10,11 +10,12 @@ const Room = () => {
    const [roomName, setRoomName] = useState('')
   const [showRegister, setShowRegister] = useState(true)
   const Createroom =()=>{
-        if (roomName !== '' && userName !== ''){
-            console.log(roomName, socket.id)
-            setShowRegister(false)
-        }
+    if (roomName !== ''){
+        console.log(roomName,userName, socket.id)
+        socket.emit('create-room',roomName)
+        setShowRegister(false)
     }
+}
   return (
     <>
     {showRegister?
