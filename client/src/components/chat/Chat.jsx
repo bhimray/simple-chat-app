@@ -43,7 +43,7 @@ const Chat = ({socket, userName, roomName}) => {
             // setTestArray((value)=>[...value, "A"])
             // console.log(`received message by ${socket.id} is ${data['message']}`)
         })
-    }, [socket])
+    }, [])
   return (
     <div>
        <div className='chathead-section'>
