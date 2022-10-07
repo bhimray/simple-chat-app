@@ -1,17 +1,23 @@
 import React from 'react';
 import './App.css';
-import Chat from './components/chat/Chat';
 import Room from './components/room/Room';
-import User from './components/user';
-import UserRoom from './components/UserRoom';
+import {QueryClientProvider, QueryClient} from "react-query"
+import {ApolloClient,InMemoryCache, ApolloProvider, useQuery, gql} from '@apollo/client'
 
 let app=0
+const client = new ApolloClient({
+  uri:'http://localhost:5000',
+  cache:new InMemoryCache(),
+})
+const queryClient = new QueryClient()
 function App() {
   console.log(app++, "app")
   return (
-    <div className="App">
-      <Room/>
-    </div>
+    <ApolloProvider client={client}>
+      <div className="App">
+        <Room/>
+      </div>
+    </ApolloProvider>
   );
 }
 

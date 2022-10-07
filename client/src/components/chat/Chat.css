@@ -7,6 +7,20 @@
     font-size:3rem;
     font-weight: 600;
 }
+.single-user{
+    width:10rem;
+    height: fit-content;
+    background-color: rgb(97, 97, 192);
+    text-align: start;
+    padding:1.5rem;
+}
+.left-container{
+    height: 25rem;
+    width:10rem;
+    color:white;
+    font-weight: 600;
+    background-color: aqua;
+}
 .status{
     width:2rem;
     height: 2rem;
