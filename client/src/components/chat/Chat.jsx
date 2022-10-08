@@ -19,9 +19,11 @@ const Chat = ({socket}) => {
     const sendMessage=async(e)=>{
         e.preventDefault()
         console.log(message, "-----------------------content")
+        console.log(user.userID, user.emailID,"-----------------*****+++++++++++++userID")
         await socket.emit('sendmessage',{
             message,
-            to:selectUser
+            from:socket.id,
+            to:selectUser,
         })
         setReceivedMessage((prev)=>[...prev, message])
     }  
@@ -85,7 +87,7 @@ const Chat = ({socket}) => {
                     return(
                         <div className="single-user">
                             <div className="user-name" onClick={()=>setSelectUser(user.userID)}>{user.username}</div>
-                            <div className="user-id">{user.userID}</div>
+                            <div className="user-id">{user.emailID}</div>
                         </div>
                     )
                 })}

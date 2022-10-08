@@ -31,18 +31,10 @@ const Room = () => {
     if(event.key === 'Enter'){
       console.log(event, "this is event-----2")
       setShowRegister(false);
-      socket.userID = {emailID}
-      socket.auth = {userName}
+      socket.auth = {userName, emailID}
       console.log(socket.auth, userName)
       socket.connect()
     }
-    const {data, isLoading, isError, error} = useMutation(saveUser, 
-      {variables:{
-        email: emailID,
-        name:userName 
-    }})
-    if (isLoading) console.log("isLoading--------------")
-    if (!isLoading) console.log(data, "loaded data............")
   }
 
 
