@@ -47,60 +47,77 @@ const io = new Server(server, {
 async function saveMessage(users,data){
     await mongoose.connect(MONGO_DB).then((res)=>{
         console.log("Mongodb is connected")
+        console.log("---------------------data------------------------")
         console.log("msg data is", data)
-        console.log(users,"users for saving message corres.................to>>>>>>socket")
-        let checkUser =0
+        console.log("----------------------users------------------------")
+        console.log("this is users", users)
+        var checkUser =0
+        var messengerExist = 0;
         // saving message in mongodb corresponding to the socket emailid
         for (let user of users){ // iterate over the users obtained by the socket.io
             console.log(data.to, user.userID)
             if (data.to === user.userID) {//check if receiver socket matches with any socket id
-                let toEmail = user.emailID;//if matched then we will save that emailid
+                var toEmail = user.emailID;//if matched then we will save that emailid
                 console.log(toEmail, "to email...")
                 for (let user of users){// iterate over the users obtained by the socket.io
                     if (data.from === user.userID){//check if the sender socket matches with any socket id
-                        checkUser++;
-                        let fromEmail = user.emailID // if matched then we will save the emailid of sender
+                        checkUser = checkUser+1;
+                        var fromEmail = user.emailID // if matched then we will save the emailid of sender
                         console.log(fromEmail, "from email...")
-                        try{
-                            const senderEmail = msgContainer.updateOne({receiverEmailID:'chunchun@gmail.com', senderEmailID:"nagmani@gmail.com"},
-                                {
-                                    $push: {
-                                    messageArray: {
-                                        $each: [ { message: "this is new message"}],
-                                    }
-                                    }
-                                }
-                                ,(err, docs)=>{
-                                    if (err) return console.log(err);
-                                    console.log(docs, "this is docs asshole");
-                                    // senderEmail.update({receiverEmailID:'chunchun@gmail.com', senderEmailID:"nagmani@gmail.com"}, {$push: {message:"there you go" }});
+                        const checkLength = msgContainer.findOne({receiverEmailID:toEmail, senderEmailID:fromEmail},(err, docs)=>{
+                            console.log(docs, "this is docs findone")
+                            console.log("---------------",messengerExist, "-----------------------this is messenger");
+                            let update=false;
+                            if (docs) {update = true};
+                            console.log(update, "change")
+                            if (update){
+                                try{
+                                    msgContainer.updateOne({receiverEmailID:toEmail, senderEmailID:fromEmail},
+                                        {
+                                            $push: {
+                                            messageArray: {
+                                                message: data.message,
+                                            
+                                            }
+                                            }
+                                        }
+                                        ,(err, docs)=>{
+                                            if (err) return console.log(err);
+                                            console.log(docs, "this is docs asshole");
+                                            // senderEmail.update({receiverEmailID:'chunchun@gmail.com', senderEmailID:"nagmani@gmail.com"}, {$push: {message:"there you go" }});
 
-                            })
-                            // console.log(senderEmail,"this is senderEmail")
-                            
-                        } catch (err){
-                            throw err;
-                    }
+                                    })
+                                    // console.log(senderEmail,"this is senderEmail")
+                                    
+                                } catch (err){
+                                    throw err;
+                                }
+                            }else {
+                                console.log("creating user")
+                                try{
+                                    // console.log(senderEmail.senderEmailID)
+                                    const newMessenger = new msgContainer({
+                                        receiverEmailID:toEmail,
+                                        senderEmailID:fromEmail,
+                                        messageArray:
+                                        {
+                                            message:data.message
+                                        }
+                                    }) 
+                                    newMessenger.save()
+                                    console.log("newMessenger created")
+                                }catch (err){
+                                    console.log("err occured",err)
+                                }
+                            }
+                    })
+
                     }
                 }
             }
         }
-        if (createUser=== 0){
-            try{
-                console.log(senderEmail.senderEmailID)
-                const newMessenger = new msgContainer({
-                    receiverEmailID:toEmail,
-                    senderEmailID:fromEmail,
-                    messageArray:
-                    {
-                        message:data.message
-                    }
-                }) 
-                newMessenger.save()
-            }catch (err){
-                console.log("err occured")
-            }
-        }
+        console.log("check checkUser", checkUser);
+        
         console.log("iteration ended....&&&&")
 
     }).catch((err)=>{
@@ -123,7 +140,8 @@ io.use((socket, next)=>{
 // setting a connection with the front-end webpage
 io.on('connection', async (socket)=>{
     let users = []
-    for (let [id, socket] of io.of("/").sockets) {
+    console.log("SOCKETS----------",Object.keys(io.sockets.sockets),"-----------------")
+    for (let [id, socket] of io.sockets.sockets) {
         users.push({
         userID: id,
         emailID:socket.emailID,
@@ -145,8 +163,19 @@ io.on('connection', async (socket)=>{
     console.log("users are broadcasted------------9")
 
     socket.on('sendmessage', (data)=>{
+        const Users= [];
+        for (let [id, socket] of io.sockets.sockets) {
+            Users.push({
+            userID: id,
+            emailID:socket.emailID,
+            username: socket.username,
+            }
+            );
+            // console.log(users,"all users -----------4")
+        }
+        console.log(Users,"********************************")
         console.log("we received the message on sever side")
-        saveMessage(users,data);
+        saveMessage(Users,data);
         console.log(data.message,data.to,data.from, socket.id,"is the message received from the client")
         socket.to(data.to).emit('receivedMessage',data.message)
     })
